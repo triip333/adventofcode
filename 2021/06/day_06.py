@@ -2,6 +2,7 @@ from os import sys, path
 import time
 sys.path.append(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))))
 from common import get_input
+from collections import defaultdict
 
 sample = '''\
 3,4,3,1,2\
@@ -9,8 +10,7 @@ sample = '''\
 
 def part_1(input):
     lst = [int(i) for i in input.split(',')]
-    print(lst)
-    for day in range(2560):
+    for day in range(80):
         starttime = time.perf_counter()
         cnt = 0
         for i, j in enumerate(lst):
@@ -20,39 +20,30 @@ def part_1(input):
             else:
                 lst[i] = j - 1
         lst += cnt * [8] 
-        print(f'day {day + 1} {len(lst)} {((time.perf_counter() - starttime)):.3f} s')
+        # print(f'day {day + 1} {len(lst)} {((time.perf_counter() - starttime)):.3f} s')
     return len(lst)
  
 def part_2(input):
+    D = defaultdict(int)
     lst = [int(i) for i in input.split(',')]
-    c0 = lst.count(0)
-    c1 = lst.count(1)
-    c2 = lst.count(2)
-    c3 = lst.count(3)
-    c4 = lst.count(4)
-    c5 = lst.count(5)
-    c6 = lst.count(6)
-    c7 = lst.count(7)
-    c8 = lst.count(8)
+    for i in input.split(','):
+        D[int(i)] += 1
 
-    print(lst)
     for day in range(256):
-        l = [c0, c1, c2, c3, c4, c5, c6, c7, c8]
-        c0 = l[1]
-        c1 = l[2]
-        c2 = l[3]
-        c3 = l[4]
-        c4 = l[5]
-        c5 = l[6]
-        c6 = l[7] + l[0]
-        c7 = l[8]
-        c8 = l[0]
-        # print(f'day {day + 1} {sum([c0, c1, c2, c3, c4, c5, c6, c7, c8])}')
-    return sum([c0, c1, c2, c3, c4, c5, c6, c7, c8])
+        C = defaultdict(int)
+        for i in range(9):
+            if i == 0:
+                C[6] += D[0]
+                C[8] += D[0]
+            else:
+                C[i - 1] += D[i]
+        D = C
+        # print(f'day {day + 1} {D.values()}')
+    return sum(D.values())
 
 if __name__ == '__main__':
     input  = get_input()
-    print(part_1(sample))
-    # print(part_1(input))
-    print(part_2(sample))
-    # print(part_2(input))      
+    # print(part_1(sample))
+    print(part_1(input))
+    # print(part_2(sample))
+    print(part_2(input))      
