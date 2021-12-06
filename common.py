@@ -24,7 +24,7 @@ def get_input():
         while not input:
             try:
                 url = f'https://adventofcode.com/{year}/day/{day}/input'
-                cookies = {'session': '53616c7465645f5f34ae94d8bfe95747408c1fb21872e5ba96601a64c9b762cf4f9d0aef7fe68af450eb32560b9b3901'}
+                cookies = {'session': ''}
                 headers = {'User-Agent': 'python requests'}
                 response = requests.get(url, cookies=cookies, headers=headers)
                 input = response.text                
