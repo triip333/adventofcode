@@ -3,6 +3,18 @@ import functools
 from time import perf_counter, sleep, strftime
 import urllib.request
 import requests
+import subprocess
+import json
+
+with open('../../conf.json') as f:
+    conf = json.loads(f.read())
+
+def get_ip():
+    res = subprocess.run('ipconfig', shell=True, capture_output=True, encoding='iso_8859_13')
+    if res.returncode == 0:
+        for l in res.stdout.splitlines():
+            if 'IPv4 Address' in l:
+                return l.split(':')[1].strip()
 
 def get_input():
     if os.path.isfile('input'):
@@ -24,9 +36,10 @@ def get_input():
         while not input:
             try:
                 url = f'https://adventofcode.com/{year}/day/{day}/input'
-                cookies = {'session': '53616c7465645f5f935154fd63e3a3ff712171abeb6d9f00fba01410dbc826c1bb638fba0cd4920ef19c18d696285500'}
+                cookies = {'session': conf['session']}
                 headers = {'User-Agent': 'python requests'}
-                response = requests.get(url, cookies=cookies, headers=headers)
+                proxies = {'http': conf['http'], 'https': conf['https']} if get_ip().startswith(conf['ip_mask']) else {}
+                response = requests.get(url, cookies=cookies, headers=headers, proxies=proxies, verify=False)
                 input = response.text.strip()
                 with open('input', 'w') as f:
                     f.write(input)
