@@ -23,7 +23,7 @@ def part_2():
     return min(res)
 
 if __name__ == '__main__':
-    input  = get_input()
+    input = get_input()
     global l
     # l = [int(i) for i in sample.split(',')]
     l = [int(i) for i in input.split(',')]

@@ -82,7 +82,7 @@ def part_2(input):
     return sum([1 if i > 1 else 0 for a in arr for i in a])
 
 if __name__ == '__main__':
-    input  = get_input()
+    input = get_input()
     print(part_1(sample))
     print(part_2(sample))      
     # print(part_1(input))

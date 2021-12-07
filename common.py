@@ -24,10 +24,10 @@ def get_input():
         while not input:
             try:
                 url = f'https://adventofcode.com/{year}/day/{day}/input'
-                cookies = {'session': ''}
+                cookies = {'session': '53616c7465645f5f935154fd63e3a3ff712171abeb6d9f00fba01410dbc826c1bb638fba0cd4920ef19c18d696285500'}
                 headers = {'User-Agent': 'python requests'}
                 response = requests.get(url, cookies=cookies, headers=headers)
-                input = response.text                
+                input = response.text.strip()
                 with open('input', 'w') as f:
                     f.write(input)
             except Exception as e:

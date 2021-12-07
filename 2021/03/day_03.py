@@ -64,6 +64,6 @@ def part_2(input):
     return int(l1[0], 2) * ( int(l2[0], 2))
 
 if __name__ == '__main__':
-    input  = get_input()
+    input = get_input()
     print(part_1(input))
     print(part_2(input))

@@ -33,7 +33,7 @@ def part_2(input):
     return h_pos * depth
 
 if __name__ == '__main__':
-    input  = get_input()
+    input = get_input()
     print(part_1(input))
     ex = '''\
         forward 5

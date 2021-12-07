@@ -106,7 +106,7 @@ def part_2(input):
             return boards[0].value()
 
 if __name__ == '__main__':
-    input   = get_input()
+    input = get_input()
     # print(part_1(sample))
     # print(part_1(input))
     # print(part_2(sample))
