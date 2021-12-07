@@ -24,7 +24,6 @@ def part_2():
 
 if __name__ == '__main__':
     input = get_input()
-    global l
     # l = [int(i) for i in sample.split(',')]
     l = [int(i) for i in input.split(',')]
     print(part_1())
