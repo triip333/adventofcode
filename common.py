@@ -27,7 +27,7 @@ def get_input():
                 cookies = {'session': ''}
                 headers = {'User-Agent': 'python requests'}
                 response = requests.get(url, cookies=cookies, headers=headers)
-                input = response.text                
+                input = response.text.strip()
                 with open('input', 'w') as f:
                     f.write(input)
             except Exception as e:
