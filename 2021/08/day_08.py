@@ -42,7 +42,7 @@ def part_2(input):
 #  _   _   _   len == 6, 6 contains only one from _one_
 # | | |_  |_|            9 contains both from _four_
 # |_| |_|  _|            0 else
-#          _   _
+#          _   _         4 only those two are interesting, that aren't in _one_
 #   | |_|   | |_|
 #   |   |   | |_|
 
