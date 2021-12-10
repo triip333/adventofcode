@@ -1,7 +1,7 @@
 from os import sys, path
 import time
 sys.path.append(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))))
-from common import get_input
+from common import get_input, measure_ms
 
 sample = '''\
 be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
@@ -16,6 +16,7 @@ egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce\
 '''
 
+@measure_ms
 def part_1(input):
     res = 0
     for line in input.split('\n'):
@@ -24,7 +25,8 @@ def part_1(input):
             if len(o) in [7, 4, 2, 3]:
                 res += 1
     return res
-
+    
+@measure_ms
 def part_2(input):
     res = 0
     for line in input.split('\n'):
@@ -35,14 +37,15 @@ def part_2(input):
         output = line.split('|')[1]
         for o in output.strip().split(' '):
             digit.append(''.join(sorted(o)))
-
+# _one_ = ab
+# _four_ = abcd - _one_ = cd
 #  _   _   _   len == 5, 3 contains both from _one_
-#  _|  _| |_             5 contains both from _four_
+#  _|  _| |_             5 elif contains both from _four_
 # |_   _|  _|            2 else
 #  _   _   _   len == 6, 6 contains only one from _one_
-# | | |_  |_|            9 contains both from _four_
+# | | |_  |_|            9 elif contains both from _four_
 # |_| |_|  _|            0 else
-#          _   _         4 only those two are interesting, that aren't in _one_
+#          _   _
 #   | |_|   | |_|
 #   |   |   | |_|
 
@@ -72,7 +75,7 @@ def part_2(input):
                 else:
                     P[p] = '2'
             if len(p) == 6:
-                if ((one[0] in p) and (not (one[1] in p))) or (not (one[0] in p) and (one[1] in p)):
+                if (one[0] in p) != (one[1] in p):
                     P[p] = '6'
                 elif (four[0] in p) and (four[1] in p):
                     P[p] = '9'
@@ -82,7 +85,6 @@ def part_2(input):
         for d in digit:
             num += P[d]
         res += int(num)
-
     return res
 
 if __name__ == '__main__':
