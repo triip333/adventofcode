@@ -38,21 +38,19 @@ def is_valid_2(next_cave, current_path):
 
 @measure_ms
 def solve(is_valid_func):
+    res = 0
     path = [['start']]
-    while True:
+    while path:
         new_path = []
         for p in path:
             if p[-1] == 'end':
-                new_path.append(p)
+                res += 1
             else:
                 for n in get_neighbors(p[-1]):
                     if is_valid_func(n, p):
                         new_path.append(p + [n])
-        if len(path) == len(new_path):
-            break
-        else:
             path = new_path
-    return len(path)
+    return res
 
 if __name__ == '__main__':
     input = get_input()

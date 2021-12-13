@@ -1,7 +1,7 @@
 from os import sys, path
 import time
 sys.path.append(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))))
-from common import get_input
+from common import get_input, measure_ms
 
 sample = '''\
 7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
@@ -45,16 +45,14 @@ class Bingo():
             for j in range(5):
                 if self.arr[i][j][0] == num:
                     self.arr[i][j][1] = True
-                    print(f'hit {num}')
                     return
 
     def is_complete(self):
-        a = self.arr
         for i in range(5):
-            if a[i][0][1] and a[i][1][1] and a[i][2][1] and a[i][3][1] and a[i][4][1]:
+            if all([self.arr[i][j][1] for j in range(5)]):
                 return True
-        for i in range(5):
-            if a[0][i][1] and a[1][i][1] and a[2][i][1] and a[3][i][1] and a[4][i][1]:
+        for j in range(5):
+            if all([self.arr[i][j][1] for i in range(5)]):
                 return True
 
     def value(self):
@@ -65,7 +63,7 @@ class Bingo():
                     res += self.arr[i][j][0]
         return f'{res} * {self.last_num} = {res * self.last_num}'
 
-
+@measure_ms
 def part_1(input):
     lst = input.split('\n\n')
     numbers = lst.pop(0).split(',')
@@ -79,6 +77,7 @@ def part_1(input):
             if b.is_complete():
                 return b.value()
 
+@measure_ms
 def part_2(input):
     lst = input.split('\n\n')
     numbers = lst.pop(0).split(',')
@@ -96,18 +95,14 @@ def part_2(input):
                 if not b.is_complete():
                     br.append(b)
                 else:
-                    print(b)
+                    pass
             boards = br
-            print(len(boards))
-
 
         if len(boards) == 1 and boards[0].is_complete():
-            print(boards[0])
             return boards[0].value()
 
 if __name__ == '__main__':
     input = get_input()
-    # print(part_1(sample))
-    # print(part_1(input))
-    # print(part_2(sample))
-    # print(part_2(input))      
+    # input sample
+    print(part_1(input))
+    print(part_2(input))      
