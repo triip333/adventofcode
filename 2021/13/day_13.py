@@ -33,25 +33,18 @@ def debug():
         print(''.join(['#' if i > 0 else ' ' for i in a]))
     print()
 
-def part_1(input):
+def solve(input):
     global arr
     dots, fold = input.split('\n\n')
-    max_x, max_y = 0, 0
-    for line in dots.split():
-        x, y = map(int, line.split(','))
-        if x > max_x:
-            max_x = x
-        if y > max_y:
-            max_y = y
+    max_x = max([int(line.split(',')[0]) for line in dots.split()])
+    max_y = max([int(line.split(',')[1]) for line in dots.split()])
     for x in range(max_y + 1):
         arr.append([0 for x in range(max_x + 1)])
-    # debug()
     for line in dots.split():
         x, y = map(int, line.split(','))
         arr[y][x] = 1
-    # debug()
 
-    part_1 = True
+    res = 0
     for line in fold.split('\n'):
         line = line.replace('fold along ', '')
         d, l = line.split('=')
@@ -70,15 +63,11 @@ def part_1(input):
                         arr[l - y - 1][x] = 1
             arr = arr[:l]
 
-        if part_1:
-            res = 0
+        if res == 0:
             for y in range(len(arr)):
-                for x in range(len(arr[y])):
-                    if arr[y][x]:   
-                        res += 1
-        part_1 = False
+                res += sum(arr[y][x] for x in range(len(arr[y])))
+    print(res)
     debug()
-    return res
 
 def part_2(input):
     return None
@@ -86,5 +75,4 @@ def part_2(input):
 if __name__ == '__main__':
     input = get_input()
     # input = sample
-    print(part_1(input))
-    # print(part_2(input))      
+    solve(input)
