@@ -37,47 +37,39 @@ def part_1(input):
 
 @measure_ms
 def part_2(input):
-    rolls = defaultdict(int)
+    U = {}
+    def get_win_count(pos1, pos2, score1, score2):
+        if (pos1, pos2, score1, score2) in U:
+            return U[(pos1, pos2, score1, score2)]
+        else:
+            res1, res2 = 0, 0
+            for r1_1 in range(3):
+                for r1_2 in range(3):
+                    for r1_3 in range(3):
+                        new_pos1 = (pos1 + r1_1 + r1_2 + r1_3 + 3) % 10
+                        new_score1 = score1 + new_pos1 + 1
+                        if new_score1 >= 21:
+                            res1 += 1
+                        else:
+                            for r2_1 in range(3):
+                                for r2_2 in range(3):
+                                    for r2_3 in range(3):
+                                        new_pos2 = (pos2 + r2_1 + r2_2 + r2_3 + 3) % 10
+                                        new_score2 = score2 + new_pos2 + 1
+                                        if new_score2 >= 21:
+                                            res2 += 1
+                                        else:
+                                            s1, s2 = get_win_count( new_pos1, new_pos2, new_score1, new_score2)
+                                            res1 += s1
+                                            res2 += s2
+            U[(pos1, pos2, score1, score2)] = res1, res2
+            return res1, res2
+           
     lines = input.splitlines()
-    pos1 = int(lines[0][-1]) - 1
-    pos2 = int(lines[1][-1]) - 1
-    U = defaultdict(int)
-    U[(pos1, pos2, 0, 0)] = 1
-    win_count1, win_count2 = 0, 0
-
-    for r1 in range(2):
-        for r2 in range(2):
-            for r3 in range(2):
-                rolls[r1 + r2 + r3 + 3] += 1
-
-    while len(U) > 0:
-        N = defaultdict(int)
-        for u_conf, u_count in U.items():
-            for roll_value, roll_count in rolls.items():
-                pos, score = u_conf[0], u_conf[2]
-                pos = (pos + roll_value) % 10
-                score += pos + 1
-                if score >= 21:
-                    win_count1 += u_count * roll_count
-                else:
-                    N[(pos, u_conf[1], score, u_conf[3])] = u_count * roll_count
-        U = N
-        N = defaultdict(int)
-        for u_conf, u_count in U.items():
-            for roll_value, roll_count in rolls.items():
-                pos, score = u_conf[1], u_conf[3]
-                pos = (pos + roll_value) % 10
-                score += pos + 1
-                if score >= 21:
-                    win_count2 += u_count * roll_count
-                else:
-                    N[(u_conf[0], pos, u_conf[2], score)] = u_count * roll_count
-        U = N
-            
-    return win_count1, win_count2
+    return max(get_win_count(int(lines[0][-1]) - 1, int(lines[1][-1]) - 1, 0, 0))
 
 if __name__ == '__main__':
     input = get_input()
-    input = sample
+    # input = sample
     print(part_1(input))
     print(part_2(input))      
