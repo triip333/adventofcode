@@ -3,7 +3,7 @@ import time
 sys.path.append(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))))
 from common import get_input, measure_ms
 from collections import defaultdict
-from functools import lru_cache
+from functools import cache
 
 sample = '''\
 NNCB
@@ -40,7 +40,6 @@ def part_1():
 
 @measure_ms
 def part_2():
-    @lru_cache(maxsize=None)
     def get_half(a, b):
         t = [a, b]
         for _ in range(20):
@@ -51,7 +50,7 @@ def part_2():
             t = new_t
         return t
 
-    @lru_cache(maxsize=None)
+    @cache
     def get_res(a, b):
         R = {}
         res = get_half(a, b)
