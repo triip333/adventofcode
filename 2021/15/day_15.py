@@ -28,13 +28,11 @@ def get_array(input, n):
 def solve(arr):
     def get_next(x, y):
         for i in [1, -1]:
-            if 0 <= x + i < X:
-                if (x + i, y) in unvisited:
-                    yield x + i, y
+            if (x + i, y) in unvisited:
+                yield x + i, y
         for j in [1, -1]:
-            if 0 <= y + j < Y:
-                if (x, y + j) in unvisited:
-                    yield x, y + j
+            if (x, y + j) in unvisited:
+                yield x, y + j
 
     X, Y = len(arr[0]), len(arr)
     unvisited = {}
@@ -49,11 +47,9 @@ def solve(arr):
         cur_len, vertex = heapq.heappop(h)
         for x, y in get_next(vertex[0], vertex[1]):
             cur_len = unvisited[vertex] + arr[y][x]
-            
             if cur_len < unvisited[(x, y)]:
                 unvisited[(x, y)] = cur_len
                 heapq.heappush(h, (cur_len, (x, y)))
-
         if vertex[0] == X - 1 and vertex[1] == Y - 1:
             return unvisited[vertex]
         unvisited.pop(vertex)
