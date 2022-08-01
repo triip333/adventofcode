@@ -1,4 +1,5 @@
 from os import sys, path
+from functools import cache
 import re
 sys.path.append(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))))
 from common import get_input
@@ -12,35 +13,26 @@ sample = '''\
 '''
 res_set = set()
 
-def get_combinations(amount, containers, combination=[]):
+@cache
+def load_combinations(amount, containers, combination=tuple()):
     global res_set
-    res = 0
     
     for i in range(len(containers)):
-        arr = containers[:]
+        arr = list(containers)
         size = arr.pop(i)
         if amount - size[1] == 0:
-            # combination.append(size)
-            res_set.add(tuple(sorted(combination + [size])))
-            print(combination)
-            res += 1
+            res_set.add(tuple(sorted(list(combination) + [size[0]])))
         elif amount - size[1] > 0:
-            res += get_combinations(amount - size[1], arr, combination + [size])
+            load_combinations(amount - size[1], tuple(arr), tuple(sorted(list(combination) + [size[0]])))
 
-    return len(res_set)
-
-def part_1(input, n):
+def solve(input, n):
     containers = [(i, int(x)) for i, x in enumerate(input.strip().splitlines())]
-    return get_combinations(n, containers)
-    
-
-def part_2(input):
-    pass
+    load_combinations(n, tuple(containers))
+    return len(res_set)
 
 if __name__ == '__main__':
     input = get_input()
-    print(part_1(sample, 25))
-    print(part_1(input, 100))
-    print(part_2(input))
-    for i in res_set:
-        print(i)
+    # print(solve(sample, 25))
+    print(solve(input, 150))
+    m = min([len(x) for x in res_set])
+    print(sum(1 for x in res_set if len(x) == m ))
