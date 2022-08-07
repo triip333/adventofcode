@@ -42,12 +42,8 @@ def solve(arr, part_2):
 if __name__ == '__main__':
     input = get_input()
 
-    arr = []
-    for line in input.strip().split('\n'):
-        arr.append([x for x in line])
-    print(solve(arr, False))
-    
-    arr = []
-    for line in input.strip().split('\n'):
-        arr.append([x for x in line])
-    print(solve(arr, True))
+    for part_2 in [False, True]:
+        arr = []
+        for line in input.strip().split('\n'):
+            arr.append([x for x in line])
+        print(solve(arr, part_2))
