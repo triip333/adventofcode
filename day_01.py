@@ -14,7 +14,6 @@ def part_2(input):
 
 if __name__ == '__main__':
     input = get_input()
-    print(part_1(sample))
+    input = sample
     print(part_1(input))
-    print(part_2(sample))
-    print(part_2(input))      
+    print(part_2(input))
