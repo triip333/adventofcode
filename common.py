@@ -6,15 +6,10 @@ import requests
 import subprocess
 import json
 
-with open('../../conf.json') as f:
-    conf = json.loads(f.read())
-
-def get_ip():
-    res = subprocess.run('ipconfig', shell=True, capture_output=True, encoding='iso_8859_13')
-    if res.returncode == 0:
-        for l in res.stdout.splitlines():
-            if 'IPv4 Address' in l:
-                return l.split(':')[1].strip()
+for file in ['conf.json', '../../conf.json']:
+    if os.path.exists(file):
+        with open(file) as f:
+            conf = json.loads(f.read())
 
 def get_input():
     if os.path.isfile('input'):
@@ -38,9 +33,8 @@ def get_input():
                 url = f'https://adventofcode.com/{year}/day/{day}/input'
                 cookies = {'session': conf['session']}
                 headers = {'User-Agent': 'python requests'}
-                proxies = {'http': conf['http'], 'https': conf['https']} if get_ip().startswith(conf['ip_mask']) else {}
-                response = requests.get(url, cookies=cookies, headers=headers, proxies=proxies, verify=False)
-                input = response.text.strip()
+                response = requests.get(url, cookies=cookies, headers=headers)
+                input = response.text.rstrip()
                 with open('input', 'w') as f:
                     f.write(input)
             except Exception as e:

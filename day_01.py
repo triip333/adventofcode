@@ -14,6 +14,6 @@ def part_2(input):
 
 if __name__ == '__main__':
     input = get_input()
-    input = sample
+    input = sample.rstrip()
     print(part_1(input))
     print(part_2(input))
