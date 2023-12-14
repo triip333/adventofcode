@@ -31,10 +31,9 @@ def explode(num):
                 pos_end = i + 1
                 i, j = [int(s) for s in num[pos_start + 1:pos_end - 1].split(',')]
                 res_str_a, res_str_b = num[:pos_start], num[pos_end:]
-                match = None
-                for m in re.finditer('\d+', res_str_a):
-                    match = m.group()
-                if match:
+                m = re.findall('\d+', res_str_a)
+                if len(m) > 0:
+                    match = m[-1]
                     pos = res_str_a.rfind(match)
                     res_str_a = res_str_a[:pos] + res_str_a[pos:].replace(match, str(int(match) + i), 1)
                 m = re.search('\d+', res_str_b)
@@ -63,13 +62,11 @@ def add(a, b):
 
 def magnitude(num):
     while True:
-        m = re.search('\[\d+,\d+\]', num)
-        if not m:
-            break
-        match = m.group()
-        a, b = [int(i) for i in match[1:-1].split(',')]
-        num = num.replace(match, str(3 * a + 2 * b), 1)
-    return int(num)
+        for match in set(re.findall('\[\d+,\d+\]', num)):
+            a, b = [int(i) for i in match[1:-1].split(',')]
+            num = num.replace(match, str(3 * a + 2 * b))
+        if num.isdigit():
+            return int(num)
 
 @measure_s
 def part_1(input):
