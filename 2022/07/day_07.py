@@ -30,7 +30,7 @@ $ ls
 7214296 k
 '''
 
-def part_1(input):
+def solve(input):
     lines = input.splitlines()
     lines.pop(0)
     file_system = defaultdict(int)
@@ -71,5 +71,5 @@ def part_2(input):
 if __name__ == '__main__':
     input = get_input()
     # input = sample
-    for res in part_1(input):
+    for res in solve(input):
         print(res)
